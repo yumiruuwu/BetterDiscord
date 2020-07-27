@@ -1,24 +1,11 @@
-# BandagedBD [![Build Status][travis-badge]][travis-link] [![Language Grade][lgtm-badge]][lgtm-link] ![GitHub Releases][downloads-badge] 
-
+# BandagedBD [![Patreon][patreon-badge]][patreon-link] [![Paypal][paypal-badge]][paypal-link]
 [patreon-badge]: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.herokuapp.com%2FZerebos&style=flat-square
 [patreon-link]: https://patreon.com/Zerebos
 
 [paypal-badge]: https://img.shields.io/badge/Paypal-Donate!-%2300457C.svg?logo=paypal&style=flat-square
 [paypal-link]: https://paypal.me/ZackRauen
 
-[lgtm-badge]: https://img.shields.io/lgtm/grade/javascript/g/rauenzi/BetterDiscordApp.svg?style=flat-square
-[lgtm-link]: https://lgtm.com/projects/g/rauenzi/BetterDiscordApp/context:javascript
-
-[travis-badge]: https://img.shields.io/travis/com/rauenzi/BetterDiscordApp.svg?style=flat-square&branch=development
-[travis-link]: https://travis-ci.com/rauenzi/BetterDiscordApp
-
-[downloads-badge]: https://img.shields.io/github/downloads/rauenzi/BetterDiscordApp/latest/total?style=flat-square
-
-
-
-[![Patreon][patreon-badge]][patreon-link] [![Paypal][paypal-badge]][paypal-link]
-
-BetterDiscord is a client modification for Discord. This allows you to add plugins and themes to your personal copy of Discord. BetterDiscord also adds a number of other features out of the box.
+BandagedBD (Bandaged BetterDiscord) is a fork of the original [BetterDiscord](https://github.com/Jiiks/BetterDiscordApp) by Jiiks. This has a number of improvements over the original. The original version has been unmaintained hence this fork existing. There have been attempts to rewrite the original that I have been and will continue to be involved in, but in the meantime I will continue to maintain and improve BBD.
 
 # Installation
 
@@ -69,7 +56,7 @@ There are two: [The main server](https://discord.gg/0Tmfo5ZbORCRqbAd), and [the 
 
 
 # Supporters
-These people have all subscribed to the `True Supporter` tier on Patreon to support me.
+These people have all subscribed to the `True Supporter` tier on Patreon to support BandagedBD.
 
 <table>
 <tr>
@@ -106,7 +93,7 @@ These people have all subscribed to the `True Supporter` tier on Patreon to supp
 
 
 # Bandagers
-These people have all subscribed to the `Bandager` tier on Patreon to support me.
+These people have all subscribed to the `Bandager` tier on Patreon to support BandagedBD.
 
 
 <table>
@@ -127,7 +114,7 @@ These people have all subscribed to the `Bandager` tier on Patreon to support me
 </table>
 
 # Donors
-These people have either donated or subscribed to the most basic patron tier to support me.
+These people have either donated or subscribed to the most basic patron tier to support BandagedBD.
 
 <table>
 <tr>

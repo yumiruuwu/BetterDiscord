@@ -1,4 +1,6 @@
-import {React} from "modules";
+import BDV2 from "../../modules/v2";
+
+const React = BDV2.React;
 
 export default class Delete extends React.Component {
     render() {
