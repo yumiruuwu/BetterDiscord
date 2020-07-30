@@ -8,13 +8,15 @@ git:
 
 branches:
   only:
-  - master
+  - stable
 
 install:
   - npm install
 
 script:
   - npm run deploy
+  - npm run test
+  - npm run lint
 
 deploy:
   provider: pages
@@ -25,4 +27,4 @@ deploy:
   name: BetterDiscord Deployment
   target_branch: gh-pages
   on:
-    branch: master
+    branch: stable

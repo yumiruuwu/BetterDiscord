@@ -5,7 +5,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 module.exports = {
   mode: "development",
   target: "node",
-  devtool: "eval-cheap-source-map",
+  devtool: "eval-source-map",
   entry: "./src/index.js",
   output: {
     filename: "remote.js",
@@ -23,11 +23,11 @@ module.exports = {
   },
   resolve: {
     extensions: [".js", ".jsx"],
-    modules: [
-      path.resolve("src", "builtins"),
-      path.resolve("src", "data"),
-      path.resolve("src", "modules")
-    ]
+    alias: {
+      modules$: path.resolve("src", "modules"),
+      data$: path.resolve("src", "modules"),
+      builtins$: path.resolve("src", "modules")
+    }
   },
   module: {
     rules: [
@@ -37,22 +37,18 @@ module.exports = {
         exclude: /node_modules/,
         query: {
           presets: [["@babel/env", {
-            targets: {
-                node: "12.8.1",
-                chrome: "78"
-            }
-        }], "@babel/react"]
+              targets: {
+                  node: "10.11.0",
+                  chrome: "69"
+              }
+          }], "@babel/react"]
         }
       }
     ]
   },
   plugins: [
     new CircularDependencyPlugin({
-      // exclude detection of files based on a RegExp
-      exclude: /a\.js|node_modules/,
-      // add errors to webpack instead of warnings
-      // failOnError: true,
-      // set the current working directory for displaying module paths
+      exclude: /node_modules/,
       cwd: process.cwd(),
     })
   ],
@@ -60,10 +56,9 @@ module.exports = {
     minimizer: [
       new TerserPlugin({
         terserOptions: {
-          compress: {drop_debugger:false}
+          compress: {drop_debugger: false}
         }
       })
     ]
   }
-
 };

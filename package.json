@@ -1,37 +1,49 @@
 {
-    "name": "bandagedbd",
-    "version": "0.3.5",
+    "name": "betterdiscord",
+    "version": "1.0.0",
     "description": "Enhances Discord adding functionality and themes.",
     "main": "src/index.js",
     "scripts": {
         "build": "webpack --progress --colors",
         "watch": "webpack --progress --colors --watch",
         "build-prod": "webpack --progress --colors --mode production -o dist/remote.js --devtool none",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "minify-css": "gulp minify-css",
+        "lint-js": "eslint --ext .jsx,.js src/",
+        "build-css": "gulp build-css",
         "watch-css": "gulp watch-css",
-        "deploy": "npm run build-prod && npm run minify-css"
+        "build-prod-css": "gulp minify-css",
+        "lint-css": "stylelint src/styles/*.css && stylelint src/styles/**/*.css",
+        "prod": "npm run build-prod && npm run build-prod-css",
+        "lint": "npm run lint-js && npm run lint-css",
+        "test": "mocha --require @babel/register --recursive \"./tests/*.js\"",
+        "deploy": "npm run prod"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/rauenzi/BetterDiscordApp.git"
     },
     "author": "rauenzi",
-    "license": "MIT",
     "bugs": {
         "url": "https://github.com/rauenzi/BetterDiscordApp/issues"
     },
-    "homepage": "https://github.com/rauenzi/BetterDiscordApp#readme",
+    "homepage": "https://github.com/rauenzi/BetterDiscordApp",
     "devDependencies": {
         "@babel/core": "^7.10.5",
         "@babel/preset-env": "^7.10.4",
         "@babel/preset-react": "^7.10.4",
         "@babel/register": "^7.10.5",
         "babel-loader": "^8.1.0",
+        "babel-plugin-module-resolver": "^4.0.0",
         "circular-dependency-plugin": "^5.2.0",
+        "eslint": "^7.5.0",
+        "eslint-plugin-react": "^7.20.3",
         "gulp": "^4.0.2",
-        "gulp-csso": "^4.0.1",
+        "gulp-postcss": "^8.0.0",
         "gulp-rename": "^2.0.0",
+        "mocha": "^8.0.1",
+        "postcss-csso": "^4.0.0",
+        "postcss-easy-import": "^3.0.0",
+        "stylelint": "^13.6.1",
+        "stylelint-config-standard": "^20.0.0",
         "webpack": "^4.43.0",
         "webpack-cli": "^3.3.12"
     }

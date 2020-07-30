@@ -1,21 +1,34 @@
-# BandagedBD [![Patreon][patreon-badge]][patreon-link] [![Paypal][paypal-badge]][paypal-link]
+# BetterDiscord [![Build Status][travis-badge]][travis-link] [![Language Grade][lgtm-badge]][lgtm-link] ![GitHub Releases][downloads-badge] 
+
 [patreon-badge]: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.herokuapp.com%2FZerebos&style=flat-square
 [patreon-link]: https://patreon.com/Zerebos
 
 [paypal-badge]: https://img.shields.io/badge/Paypal-Donate!-%2300457C.svg?logo=paypal&style=flat-square
 [paypal-link]: https://paypal.me/ZackRauen
 
-BandagedBD (Bandaged BetterDiscord) is a fork of the original [BetterDiscord](https://github.com/Jiiks/BetterDiscordApp) by Jiiks. This has a number of improvements over the original. The original version has been unmaintained hence this fork existing. There have been attempts to rewrite the original that I have been and will continue to be involved in, but in the meantime I will continue to maintain and improve BBD.
+[lgtm-badge]: https://img.shields.io/lgtm/grade/javascript/g/rauenzi/BetterDiscordApp.svg?style=flat-square
+[lgtm-link]: https://lgtm.com/projects/g/rauenzi/BetterDiscordApp/context:javascript
+
+[travis-badge]: https://img.shields.io/travis/com/rauenzi/BetterDiscordApp.svg?style=flat-square&branch=stable
+[travis-link]: https://travis-ci.com/rauenzi/BetterDiscordApp
+
+[downloads-badge]: https://img.shields.io/github/downloads/rauenzi/BetterDiscordApp/latest/total?style=flat-square
+
+
+
+[![Patreon][patreon-badge]][patreon-link] [![Paypal][paypal-badge]][paypal-link]
+
+BetterDiscord is a client modification for Discord. This allows you to add plugins and themes to your personal copy of Discord. BetterDiscord also adds a number of other features out of the box.
 
 # Installation
 
 ## Auto Installers
 
 ### Windows
-Grab the `exe` file from [here](https://github.com/rauenzi/BetterDiscordApp/releases/latest/download/BandagedBD_Windows.exe).
+Grab the `exe` file from [here](https://github.com/rauenzi/BBDInstaller/releases/latest/download/BandagedBD.exe).
 
 ### macOS/OS X
-Grab the `zip` file from [here](https://github.com/rauenzi/BetterDiscordApp/releases/latest/download/BandagedBD_Mac.zip).
+Grab the `zip` file from [here](https://github.com/rauenzi/BBDInstaller/releases/latest/download/BandagedBD_Mac.zip).
 
 ### Linux
 See this [gist](https://gist.github.com/ObserverOfTime/d7e60eb9aa7fe837545c8cb77cf31172).
@@ -40,15 +53,29 @@ See this [gist](https://gist.github.com/ObserverOfTime/d7e60eb9aa7fe837545c8cb77
 6. Move the `app` folder (the one you downloaded and renamed) inside of `Resources`.
 7. Fully quit Discord and restart it.
 
+## Local Installation
+
+By default BD loads majority of the package through a CDN at runtime so you always have the latest version. However, if you'd rather only load something from your PC and update when you want, you can do that too!
+
+**Prerequisites**: [Node.js](https://nodejs.org/en/) 12.x+ and the package manager [npm](https://www.npmjs.com/).
+
+1. Clone this repository `git clone https://github.com/rauenzi/BetterDiscordApp.git`
+2. Install dependencies with `npm install`
+3. Build both the JavaScript and CSS bundles with `npm run deploy` this will create a `style.css` and `remote.js` in the `dist` folder.
+4. Follow the steps for [manual installation](#manual-installation) from before.
+5. Inside the `app` folder you created as a part of that process, find the file `betterdiscord\config.json`
+6. Edit the file and change the value of `local` to `true` and change the `localPath` value to match the <u>absolute</u> path of the `dist` folder from step 3.
+7. Fully quit Discord and restart it.
+
 # FAQ
 
 ### What is this?
 This is a client modification for Discord. It allows you to add plugins and themes to your client. Plugins can add functionality and useful features. Themes can completely change the look and feel of Discord.
 
-BBD has some other built-in features such as Emotes from Twitch, FFZ, and BBTV, as well as an in-client server browser.
+BD has some other built-in features such as Emotes from Twitch, FFZ, and BBTV, as well as an in-client server browser.
 
 ### Where can I get plugins and themes?
-In our support servers we have channels with lists of official plugins and themes. Please note we do not have an official listing on a website and are **not affiliated with any of those websites**.
+In our support servers we have channels with lists of <u>official</u> plugins and themes. Please note we do not have an official listing on a website and are **not affiliated with any of those websites**. However [BetterDiscordLibrary](https://betterdiscordlibrary.com/) is generally trustworthy.
 
 ### Support Servers?
 There are two: [The main server](https://discord.gg/0Tmfo5ZbORCRqbAd), and [the backup](https://discord.gg/2HScm8j).
@@ -56,7 +83,7 @@ There are two: [The main server](https://discord.gg/0Tmfo5ZbORCRqbAd), and [the 
 
 
 # Supporters
-These people have all subscribed to the `True Supporter` tier on Patreon to support BandagedBD.
+These people have all subscribed to the `True Supporter` tier on Patreon to support me.
 
 <table>
 <tr>
@@ -93,7 +120,7 @@ These people have all subscribed to the `True Supporter` tier on Patreon to supp
 
 
 # Bandagers
-These people have all subscribed to the `Bandager` tier on Patreon to support BandagedBD.
+These people have all subscribed to the `Bandager` tier on Patreon to support me.
 
 
 <table>
@@ -114,7 +141,7 @@ These people have all subscribed to the `Bandager` tier on Patreon to support Ba
 </table>
 
 # Donors
-These people have either donated or subscribed to the most basic patron tier to support BandagedBD.
+These people have either donated or subscribed to the most basic patron tier to support me.
 
 <table>
 <tr>
