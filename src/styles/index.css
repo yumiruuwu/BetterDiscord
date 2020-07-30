@@ -1,0 +1,26 @@
+/* stylelint-disable no-descending-specificity */
+
+@import "./builtins/*";
+@import "./ui/*";
+@import "./buttons.css";
+
+.bd-chat-badge {
+    vertical-align: bottom;
+    line-height: 1.375rem;
+    display: inline-block;
+    height: 1.25rem;
+}
+
+.bd-member-badge {
+    height: 15px;
+    margin-left: 4px;
+}
+
+.bd-changelog-modal {
+    width: 650px;
+}
+
+.bd-changelog-modal video {
+    width: 100%;
+    border-radius: 20px;
+}
