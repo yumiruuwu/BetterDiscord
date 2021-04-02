@@ -64,7 +64,7 @@ Core.prototype.init = async function() {
         return;
     }
 
-    Utils.alert("Not Supported", `The version of BetterDiscord you are using has been discontinued. Please reinstall using the new installer found here: <a href="https://github.com/BetterDiscord/Installer/releases/latest" target="_blank">https://github.com/BetterDiscord/Installer/releases/latest</a>`)
+    Utils.alert("Not Supported", `The version of BetterDiscord you are using has been discontinued. Please reinstall using the new installer found here: <a href="https://github.com/BetterDiscord/Installer/releases/latest" target="_blank">https://github.com/BetterDiscord/Installer/releases/latest</a>`);
 
     Utils.log("Startup", "Initializing Settings");
     this.initSettings();
