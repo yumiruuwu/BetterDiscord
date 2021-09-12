@@ -1,7 +1,7 @@
 {
-    "name": "betterdiscord-injector",
+    "name": "betterdiscord-preload",
     "version": "0.6.2",
-    "description": "BetterDiscord injector module",
+    "description": "BetterDiscord native module",
     "main": "src/index.js",
     "private": true,
     "scripts": {

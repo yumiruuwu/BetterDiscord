@@ -276,3 +276,14 @@ export default class WebpackModules {
     }
 
 }
+
+export const ModulePromise = new Promise(resolve => {
+    const Dispatcher = WebpackModules.getByProps("dirtyDispatch");
+    
+    const callback = function () {
+        Dispatcher.unsubscribe("CONNECTION_OPEN", callback);
+        resolve();
+    }
+
+    Dispatcher.subscribe("CONNECTION_OPEN", callback);
+});

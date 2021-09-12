@@ -9,7 +9,7 @@ module.exports = (env, argv) => ({
   devtool: argv.mode === "production" ? undefined : "eval-source-map",
   entry: "./src/index.js",
   output: {
-    filename: "injector.js",
+    filename: "preload.js",
     path: path.resolve(__dirname, "..", "dist")
   },
   externals: {
@@ -33,15 +33,7 @@ module.exports = (env, argv) => ({
     new CircularDependencyPlugin({
       exclude: /node_modules/,
       cwd: process.cwd(),
-    }),
-    // new CopyPlugin({
-    //   patterns: [
-    //     {
-    //       from: path.resolve(__dirname, "src", "preload.js"),
-    //       to: path.resolve(__dirname, "..", "dist", "preload.js")
-    //     },
-    //   ],
-    // })
+    })
   ],
   optimization: {
     minimizer: [

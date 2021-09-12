@@ -63,9 +63,11 @@ export default class BetterDiscord {
         const success = await browserWindow.webContents.executeJavaScript(`
             (() => {
                 try {
+                    console.log("Load");
                     ${content}
                     return true;
-                } catch {
+                } catch (error) {
+                    console.error("BetterDiscord failed to load:", error);
                     return false;
                 }
             })();
@@ -110,6 +112,10 @@ export default class BetterDiscord {
         browserWindow.webContents.on("render-process-gone", () => {
             hasCrashed = true;
         });
+        
+        if (__dirname.endsWith("dist")) {
+            browserWindow.once("ready-to-show", () => {browserWindow.openDevTools();});
+        }
     }
 }
 

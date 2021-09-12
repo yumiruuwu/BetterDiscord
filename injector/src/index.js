@@ -9,13 +9,16 @@ import CSP from "./modules/csp";
 if (!process.argv.includes("--vanilla")) {
     process.env.NODE_OPTIONS = "--no-force-async-hooks-checks";
     app.commandLine.appendSwitch("no-force-async-hooks-checks");
+    
+    // Import our native api and register all the events
+    import("./modules/api");
 
     // Patch and replace the built-in BrowserWindow
     BrowserWindow.patchBrowserWindow();
-
+    
     // Register all IPC events
     ipc.registerEvents();
-
+    
 
     // Remove CSP immediately on linux since they install to discord_desktop_core still
     if (process.platform == "win32" || process.platform == "darwin") app.once("ready", CSP.remove);
@@ -30,4 +33,3 @@ if (process.platform == "win32" || process.platform == "darwin") {
     app.name = pkg.name;
     Module._load(path.join(basePath, pkg.main), null, true);
 }
-

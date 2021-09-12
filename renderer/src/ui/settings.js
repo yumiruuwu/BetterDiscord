@@ -4,6 +4,7 @@ import AddonList from "./settings/addonlist";
 import SettingsGroup from "./settings/group";
 import SettingsTitle from "./settings/title";
 import Header from "./settings/sidebarheader";
+import {ModulePromise} from "../modules/webpackmodules";
 
 export default new class SettingsRenderer {
 
@@ -60,7 +61,9 @@ export default new class SettingsRenderer {
         }, options));
     }
 
-    patchSections() {
+    async patchSections() {
+        await ModulePromise;
+
         const UserSettings = WebpackModules.getByDisplayName("SettingsView");
         Patcher.after("SettingsManager", UserSettings.prototype, "getPredicateSections", (thisObject, args, returnValue) => {
             let location = returnValue.findIndex(s => s.section.toLowerCase() == "changelog") - 1;
