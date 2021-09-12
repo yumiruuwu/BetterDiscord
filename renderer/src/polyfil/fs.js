@@ -1,74 +1,50 @@
-﻿export function readFile(path, options, callback) {
-    try {
-        const returnValue = BetterDiscord.FileManager.readFile(path, options);
+﻿export const readFile = createListener("readFile");
+export const readFileSync = createSyncListener("readFile");
+
+export const writeFile = createListener("writeFile");
+export const writeFileSync = createSyncListener("writeFile");
+
+export const readdir = createListener("readDirectory");
+export const readdirSync = createSyncListener("readDirectory");
+
+export const mkdir = createListener("createDirectory");
+export const mkdirSync = createSyncListener("createDirectory");
+
+export const rmdir = createListener("deleteDirectory");
+export const rmdirSync = createSyncListener("deleteDirectory");
+
+export const exists = createListener("exists");
+export const existsSync = createSyncListener("exists");
+
+export const stat = createListener("getStats");
+export const statSync = createSyncListener("getStats");
+export const lstat = stat;
+export const lstatSync = statSync;
+
+export const rename = createListener("rename");
+export const renameSync = createSyncListener("rename");
+
+export const realpath = createListener("getRealPath");
+export const realpathSync = createSyncListener("getRealPath");
+
+function createListener(functionName) {
+    return function(...args) {
+        const callback = args.pop();
+        const returnValue = BetterDiscord.FileManager[functionName](...args);
+
+        if (returnValue.error)
+            callback(returnValue.error);
+        else
+            callback(null, returnValue.value);
+    };
+}
+
+function createSyncListener(functionName) {
+    return function(...args) {
+        const returnValue = BetterDiscord.FileManager[functionName](...args);
         
-        callback(null, returnValue);
+        if (returnValue?.error)
+            throw new Error(returnValue.error);
+        return returnValue?.value;
     }
-    catch (err) {
-        callback(err);
-    }
-}
-
-export function readFileSync(path, options) {
-    return BetterDiscord.FileManager.readFile(path, options);
-}
-
-export function writeFile(path, content, options, callback) {
-    try {
-        const returnValue = BetterDiscord.FileManager.writeFile(path, content, options);
-        
-        callback(null, returnValue);
-    }
-    catch (err) {
-        callback(err);
-    }
-}
-
-export function writeFileSync(path, content, options) {
-    return BetterDiscord.FileManager.writeFile(path, content, options);
-}
-
-export function readdir(path, options, callback) {
-    try {
-        const returnValue = BetterDiscord.FileManager.readDirectory(path, options);
-        
-        callback(null, returnValue);
-    }
-    catch (err) {
-        callback(err);
-    }
-}
-
-export function readdirSync(path, options) {
-    return BetterDiscord.FileManager.readDirectory(path, options);
-}
-
-export function exists(path, callback) {
-    try {
-        const returnValue = BetterDiscord.FileManager.exists(path);
-        
-        callback(null, returnValue);
-    }
-    catch (err) {
-        callback(err);
-    }
-}
-
-export function existsSync(path) {
-    return BetterDiscord.FileManager.exists(path);
-}
-
-export function stat(path, options, callback) {
-    try {
-        const returnValue = BetterDiscord.FileManager.getStats(path, options);
-        
-        callback(null, returnValue);
-    }
-    catch (err) {
-        callback(err);
-    }
-}
-
-export function statSync(path, options) {
-    return BetterDiscord.FileManager.getStats(path, options);
 }

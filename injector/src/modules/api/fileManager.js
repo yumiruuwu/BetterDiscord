@@ -2,26 +2,30 @@ import {ipcMain as IPC} from "electron";
 import * as IPCEvents from "common/constants/ipcevents";
 import * as fs from "fs";
 
-IPC.on(IPCEvents.READ_FILE, (event, path, options) => {
-    event.returnValue = fs.readFileSync(path, options);
-});
+IPC.on(IPCEvents.READ_FILE, createListener((path, options) => fs.readFileSync(path, options)));
+IPC.on(IPCEvents.READ_DIR, createListener((path, options) => fs.readdirSync(path, options)));
+IPC.on(IPCEvents.CREATE_DIR, createListener((path, options) => fs.mkdirSync(path, options)));
+IPC.handle(IPCEvents.DELETE_DIR, createListener((path, options) => fs.rmdirSync(path, options), true));
+IPC.on(IPCEvents.WRITE_FILE, createListener((path, content, options) => fs.writeFileSync(path, content, options)));
+IPC.on(IPCEvents.EXISTS_FILE, createListener((path) => fs.existsSync(path)));
+IPC.on(IPCEvents.GET_STATS, createListener((path, options) => ({ ...fs.statSync(path, options) })));
+IPC.on(IPCEvents.RENAME, createListener((oldPath, newPath) => fs.renameSync(oldPath, newPath)));
+IPC.on(IPCEvents.GET_REAL_PATH, createListener((path, options) => fs.realpathSync(path, options)));
 
-IPC.on(IPCEvents.READ_DIR, (event, path, options) => {
-    event.returnValue = fs.readdirSync(path, options);
-});
+function createListener(callback, promise = false) {
+    return (event, ...args) => {
+        const result = { error: null, value: null };
 
-IPC.on(IPCEvents.WRITE_FILE, (_, path, content, options) => {
-    fs.writeFileSync(path, content, options);
-});
+        try {
+            result.value = callback(...args);
+        }
+        catch (err) {
+            console.error(err);
 
-IPC.on(IPCEvents.EXISTS_FILE, (event, path) => {
-    event.returnValue = fs.existsSync(path);
-});
+            result.error = err;
+        }
 
-IPC.on(IPCEvents.GET_STATS, (event, path, options) => {
-    const stats = fs.statSync(path, options);
-    
-    event.returnValue = {
-        ...stats
+        event.returnValue = result;
+        if (promise) return Promise.resolve();
     };
-})
+}
