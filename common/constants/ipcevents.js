@@ -21,3 +21,4 @@ export const READ_FILE = "bd-read-file-sync";
 export const READ_DIR = "bd-read-directory-sync";
 export const WRITE_FILE = "bd-write-file-sync";
 export const EXISTS_FILE = "bd-exists-file";
+export const GET_STATS = "bd-get-stats";

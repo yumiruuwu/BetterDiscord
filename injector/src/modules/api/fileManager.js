@@ -17,3 +17,11 @@ IPC.on(IPCEvents.WRITE_FILE, (_, path, content, options) => {
 IPC.on(IPCEvents.EXISTS_FILE, (event, path) => {
     event.returnValue = fs.existsSync(path);
 });
+
+IPC.on(IPCEvents.GET_STATS, (event, path, options) => {
+    const stats = fs.statSync(path, options);
+    
+    event.returnValue = {
+        ...stats
+    };
+})

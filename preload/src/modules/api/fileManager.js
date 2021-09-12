@@ -16,3 +16,28 @@ export function readDirectory(path, options) {
 export function exists(path) {
     return IPC.sendSync(IPCEvents.EXISTS_FILE, path);
 }
+
+const FileStatProperties = {
+    DEFAULT: 61440,
+    DIRECTORY: 16384,
+    FILE: 32768
+};
+
+export function getStats(path, options) {
+    const stats = IPC.sendSync(IPCEvents.GET_STATS, path, options);
+    
+    function _checkModeProperty(property) {
+        return (BigInt(stats.mode) & BigInt(FileStatProperties.DEFAULT)) === BigInt(property);
+    }
+    
+    return {
+        ...stats,
+        _checkModeProperty,
+        isDirectory() {
+            return _checkModeProperty(FileStatProperties.DIRECTORY);
+        },
+        isFile() {
+            return _checkModeProperty(FileStatProperties.FILE);
+        }
+    };
+}
