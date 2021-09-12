@@ -89,6 +89,7 @@ export default new class PluginManager extends AddonManager {
             }
             catch (error) {
                 this.state[addon.id] = false;
+                Logger.error("PluginManager", `load() could not be fired for ${addon.name}:`, error);
                 return new AddonError(addon.name, addon.filename, "load() could not be fired.", {message: error.message, stack: error.stack}, this.prefix);
             }
         }
@@ -97,26 +98,9 @@ export default new class PluginManager extends AddonManager {
 
     getFileModification(module, fileContent, meta) {
         fileContent += `\nif (module.exports.default) {module.exports = module.exports.default;}\nif (!module.exports.prototype || !module.exports.prototype.start) {module.exports = ${meta.exports || meta.name};}`;
-
-        window.global = window;
-        window.module = module;
-        window.__filename = path.basename(module.filename);
-        window.__dirname = this.addonFolder;
-        const wrapped = `(${vm.compileFunction(fileContent, ["exports", "require", "module", "__filename", "__dirname"]).toString()})`;
-        const final = `${wrapped}(window.module.exports, window.require, window.module, window.__filename, window.__dirname)\n//# sourceURL=betterdiscord://plugins/${window.__filename}`;
-
-        const container = document.createElement("script");
-        container.innerHTML = final;
-        container.id = `${meta.id}-script-container`;
-        // container.src = `data:text/javascript;${btoa(final)}`;
-        document.head.append(container);
-
+        module._compile(fileContent, module.filename);
         meta.exports = module.exports;
         module.exports = meta;
-        delete window.module;
-        delete window.__filename;
-        delete window.__dirname;
-        container.remove();
         return "";
     }
 

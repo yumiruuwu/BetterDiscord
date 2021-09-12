@@ -1,6 +1,8 @@
 import Logger from "./logger";
 
 export default class EventEmitter {
+    static get EventEmitter() {return EventEmitter;}
+
     constructor() {
         this.events = {};
     }

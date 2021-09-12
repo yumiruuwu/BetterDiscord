@@ -1,7 +1,7 @@
 import {ipcRenderer as IPC} from "electron";
 import * as IPCEvents from "common/constants/ipcevents";
 
-export function readFile(path, options) {
+export function readFile(path, options = "utf8") {
     return IPC.sendSync(IPCEvents.READ_FILE, path, options);
 }
 
@@ -27,6 +27,24 @@ export function exists(path) {
 
 export function getRealPath(path, options) {
     return IPC.sendSync(IPCEvents.GET_REAL_PATH, path, options);
+}
+
+export function watch(path, options, callback) {
+    const id = Math.random().toString("36").repeat(10);
+
+    const handleCallback = (_, ...args) => {
+        callback(...args);
+    };
+
+    IPC.on(IPCEvents.WATCH_DIR + "-" + id, handleCallback);
+    IPC.send(IPCEvents.WATCH_DIR, path, options, id);
+
+    return {
+        close: () => {
+            IPC.off(IPCEvents.WATCH_DIR + "-" + id, handleCallback);
+            IPC.send(IPCEvents.WATCH_DIR + "-" + id + "-close");
+        }
+    };
 }
 
 const FileStatProperties = {

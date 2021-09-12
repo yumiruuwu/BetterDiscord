@@ -3,38 +3,37 @@ import {compileFunction} from "./vm";
 
 export const RequireExtensions = {
     ".js": (module, filename) => {
-        const fileContent = BetterDiscord.FileManager.readFile(filename, "utf8");
-        const mod = new Module(filename, module);
-        module.children.push(mod);
-        window.require.cache[filename] = mod._compile(fileContent);
-        return mod.exports;
+        const fileContent = BetterDiscord.FileManager.readFile(filename, "utf8").value;
+        module.fileContent = fileContent;
+        module._compile(fileContent);
+        return module.exports;
     },
     ".json": (module, filename) => {
-        const fileContent = BetterDiscord.FileManager.readFile(filename, "utf8");
-        const mod = new Module(filename, module);
-        module.children.push(mod);
-        window.require.cache[filename] = mod;
-        mod.exports = JSON.parse(fileContent);
+        const fileContent = BetterDiscord.FileManager.readFile(filename, "utf8").value;
+        module.fileContent = fileContent;
+        module.exports = JSON.parse(fileContent);
 
-        return mod;
+        return module.exports;
     }
 };
 
 export default class Module {
     static _load(mod) {
         if (!BetterDiscord.FileManager.exists(mod)) throw new Error(`Cannot find module ${mod}`);
-
-        const loader = RequireExtensions["." + BetterDiscord.PathModule.extname(mod)];
+        if (window.require.cache[mod]) return window.require.cache[mod].exports;
+        
+        const loader = RequireExtensions[BetterDiscord.PathModule.extname(mod)];
         if (!loader) throw new Error(`Cannot find module ${mod}`);
-
-        return loader(internalModule, mod);
+        const module = window.require.cache[mod] = new Module(mod, internalModule);
+        loader(module, mod);
+        return module.exports;
     }
 
     static get Module() {return Module;}
 
     static get createRequire() {Logger.warn("ContextModule", "Module.createRequire not implemented yet.");}
 
-    static get extensions() {return RequireExtensions;}
+    static get _extensions() {return RequireExtensions;}
 
     constructor(id, parent) {
         this.id = id;
@@ -44,12 +43,13 @@ export default class Module {
         this.filename = id;
         this.loaded = false;
         this.children = [];
+
+        if (parent) parent.children.push(this);
     }
 
     _compile(code) {
-        const wrapped = compileFunction(code, ["require", "module", "exports", "__filename", "__dirname"], this.filename);
-        
-        return wrapped(window.require, this, this.exports, this.filename, this);
+        const wrapped = compileFunction(code, ["require", "module", "exports", "__filename", "__dirname", "global"], this.filename);
+        wrapped(window.require, this, this.exports, this.filename, this.path, window);
     }
 };
 

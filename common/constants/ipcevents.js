@@ -26,3 +26,4 @@ export const EXISTS_FILE = "bd-exists-file";
 export const GET_STATS = "bd-get-stats";
 export const RENAME = "bd-rename";
 export const GET_REAL_PATH = "bd-get-real-path";
+export const WATCH_DIR = "bd-watch-dir";

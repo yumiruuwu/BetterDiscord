@@ -1,4 +1,4 @@
-﻿export const readFile = createListener("readFile");
+export const readFile = createListener("readFile");
 export const readFileSync = createSyncListener("readFile");
 
 export const writeFile = createListener("writeFile");
@@ -26,6 +26,7 @@ export const renameSync = createSyncListener("rename");
 
 export const realpath = createListener("getRealPath");
 export const realpathSync = createSyncListener("getRealPath");
+export const watch = createSyncListener("watch");
 
 function createListener(functionName) {
     return function(...args) {
@@ -43,8 +44,29 @@ function createSyncListener(functionName) {
     return function(...args) {
         const returnValue = BetterDiscord.FileManager[functionName](...args);
         
-        if (returnValue?.error)
-            throw new Error(returnValue.error);
+        if (returnValue?.error) throw new Error(returnValue.error);
         return returnValue?.value;
-    }
+    };
 }
+
+export default {
+    readFile,
+    exists,
+    existsSync,
+    lstat,
+    lstatSync,
+    mkdir,
+    mkdirSync,
+    readFileSync,
+    readdir,
+    readdirSync,
+    realpath,
+    realpathSync,
+    rename,
+    renameSync,
+    rmdir,
+    rmdirSync,
+    watch,
+    writeFile,
+    writeFileSync
+};

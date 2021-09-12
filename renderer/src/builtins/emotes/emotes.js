@@ -229,11 +229,18 @@ const modifiers = ["flip", "spin", "pulse", "spin2", "spin3", "1spin", "2spin", 
         try {
             const asar = Config.release.assets.find(a => a.name === "emotes.asar");
             this.log(`Downloading emotes from: ${asar.url}`);
-            const buff = await new Promise((resolve, reject) =>
-                request(asar.url, {encoding: null, headers: {"User-Agent": "BetterDiscord Emotes", "Accept": "application/octet-stream"}}, (err, resp, body) => {
-                if (err || resp.statusCode != 200) return reject(err || `${resp.statusCode} ${resp.statusMessage}`);
-                return resolve(body);
-            }));
+            const buff = await new Promise((resolve, reject) => {
+                request.get(asar.url, {
+                    encoding: null,
+                    headers: {
+                        "User-Agent": "BetterDiscord Emotes",
+                        "Accept": "application/octet-stream"
+                    }
+                }, (err, res, body) => {
+                    if (err || res.statusCode != 200) return reject(err || `${res.statusCode} ${res.statusMessage}`);
+                    return resolve(body);
+                });
+            });
 
             this.log("Successfully downloaded emotes.asar");
             const asarPath = this.asarPath;
