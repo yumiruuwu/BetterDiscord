@@ -11,11 +11,12 @@ IPC.on(IPCEvents.EXISTS_FILE, createListener((path) => fs.existsSync(path)));
 IPC.on(IPCEvents.GET_STATS, createListener((path, options) => ({ ...fs.statSync(path, options) })));
 IPC.on(IPCEvents.RENAME, createListener((oldPath, newPath) => fs.renameSync(oldPath, newPath)));
 IPC.on(IPCEvents.GET_REAL_PATH, createListener((path, options) => fs.realpathSync(path, options)));
-IPC.on(IPCEvents.WATCH_DIR, createListener((path, options = {}, watcherId) => {
+IPC.on(IPCEvents.WATCH_DIR, createListener((event, path, options = {}, watcherId) => {
     const id = IPCEvents.WATCH_DIR + "-" + watcherId;
 
     const callback = (...args) => {
-        IPC.emit(id, ...args);
+        console.log("emit", id);
+        event.sender.webContents.send(id, ...args);
     };
 
     const handleClose = () => {
@@ -26,11 +27,13 @@ IPC.on(IPCEvents.WATCH_DIR, createListener((path, options = {}, watcherId) => {
     const watcher = fs.watch(path, options, callback);
 
     IPC.on(id + "-close", handleClose);
-}));
+}, false, true));
 
-function createListener(callback, promise = false) {
+function createListener(callback, promise = false, includeEvent = false) {
     return (event, ...args) => {
         const result = { error: null, value: null };
+
+        if (includeEvent) args.unshift(event);
 
         try {
             result.value = callback(...args);

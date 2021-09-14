@@ -201,11 +201,15 @@ export default class AddonManager {
         };
     }
 
+    clearCache(filename) {
+        delete __non_webpack_require__.cache[__non_webpack_require__.resolve(path.resolve(this.addonFolder, filename))?.id];
+    }
+
     // Subclasses should use the return (if not AddonError) and push to this.addonList
     loadAddon(filename, shouldToast = false) {
         if (typeof(filename) === "undefined") return;
         try {
-            delete __non_webpack_require__.cache[__non_webpack_require__.resolve(path.resolve(this.addonFolder, filename))];
+            this.clearCache(filename);
             __non_webpack_require__(path.resolve(this.addonFolder, filename));
         }
         catch (error) {
@@ -231,7 +235,7 @@ export default class AddonManager {
         const addon = typeof(idOrFileOrAddon) == "string" ? this.addonList.find(c => c.id == idOrFileOrAddon || c.filename == idOrFileOrAddon) : idOrFileOrAddon;
         if (!addon) return false;
         if (this.state[addon.id]) isReload ? this.stopAddon(addon) : this.disableAddon(addon);
-        delete __non_webpack_require__.cache[__non_webpack_require__.resolve(path.resolve(this.addonFolder, addon.filename))];
+        this.clearCache(addon.filename);
         this.addonList.splice(this.addonList.indexOf(addon), 1);
         this.emit("unloaded", addon.id);
         if (shouldToast) Toasts.success(`${addon.name} was unloaded.`);

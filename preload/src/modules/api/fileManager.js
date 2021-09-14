@@ -29,20 +29,26 @@ export function getRealPath(path, options) {
     return IPC.sendSync(IPCEvents.GET_REAL_PATH, path, options);
 }
 
+export function rename(oldPath, newPath) {
+    return IPC.sendSync(IPCEvents.RENAME, oldPath, newPath);
+}
+
 export function watch(path, options, callback) {
-    const id = Math.random().toString("36").repeat(10);
+    const id = Math.random().toString("36").slice(2).repeat(10);
+    const watcherId = IPCEvents.WATCH_DIR + "-" + id;
 
     const handleCallback = (_, ...args) => {
+        console.log("receive:", args);
         callback(...args);
     };
 
-    IPC.on(IPCEvents.WATCH_DIR + "-" + id, handleCallback);
+    IPC.on(watcherId, handleCallback);
     IPC.send(IPCEvents.WATCH_DIR, path, options, id);
 
     return {
         close: () => {
-            IPC.off(IPCEvents.WATCH_DIR + "-" + id, handleCallback);
-            IPC.send(IPCEvents.WATCH_DIR + "-" + id + "-close");
+            IPC.off(watcherId, handleCallback);
+            IPC.send(watcherId + "-close");
         }
     };
 }
@@ -74,8 +80,4 @@ export function getStats(path, options) {
             }
         }
     };
-}
-
-export function rename(oldPath, newPath) {
-    return IPC.sendSync(IPCEvents.RENAME, oldPath, newPath);
 }

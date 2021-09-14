@@ -206,7 +206,7 @@ const modifiers = ["flip", "spin", "pulse", "spin2", "spin3", "1spin", "2spin", 
             delete __non_webpack_require__.cache[path.join(this.asarPath, "blocklist")];
         }
         catch (err) {
-            this.log("Failed to load emotes.");
+            this.log("Failed to load emotes.", err);
         }
 
         this.emotesLoaded = true;
@@ -230,7 +230,7 @@ const modifiers = ["flip", "spin", "pulse", "spin2", "spin3", "1spin", "2spin", 
             const asar = Config.release.assets.find(a => a.name === "emotes.asar");
             this.log(`Downloading emotes from: ${asar.url}`);
             const buff = await new Promise((resolve, reject) => {
-                request.get(asar.url, {
+                request.get(asar.browser_download_url, {
                     encoding: null,
                     headers: {
                         "User-Agent": "BetterDiscord Emotes",

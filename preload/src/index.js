@@ -1,13 +1,18 @@
 import {contextBridge} from "electron";
-import * as BdApi from "./modules/api";
-import path from "path";
-import Module from "module";
-import process from "./modules/process";
 
-Module.globalPaths.push(path.resolve(process.env.DISCORD_APP_PATH, "..", "app.asar", "node_modules"));
+console.log({
+    Module,
+    globalPaths: Module.globalPaths.length,
+    request: import("request")
+});
+import newProcess from "./modules/process";
+import Module from "module";
+
+import * as BdApi from "./modules/api";
+
 
 contextBridge.exposeInMainWorld("BetterDiscord", BdApi);
-contextBridge.exposeInMainWorld("process", process);
+contextBridge.exposeInMainWorld("process", newProcess);
 
 import("./modules/loadDiscord.js");
 

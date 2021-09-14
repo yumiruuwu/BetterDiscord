@@ -15,6 +15,7 @@ const require = function (mod) {
         case "electron": return BetterDiscord.ElectronModule;
         case "vm": return vm;
         case "module": return Module;
+        case "crypto": return;
 
         default:
             return Module._load(mod);
@@ -28,6 +29,7 @@ require.resolve = (path) => {
     }
 }
 
-window.require = require;
+window.require = require/*.bind(BetterDiscord.PathModule.resolve("."))*/;
+window.Buffer = BetterDiscord.Buffer;
 
 export default require;

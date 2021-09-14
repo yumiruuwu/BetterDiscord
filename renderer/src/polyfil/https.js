@@ -1,14 +1,22 @@
 import EventEmitter from "common/events";
 
 export function get(url, options = {}, callback) {
-    const emitter = new EventEmitter();
-    callback(emitter);
     if (typeof (options) === "function") {
         callback = options;
         options = null;
     }
 
+    const emitter = new EventEmitter();
+    
+    if (typeof (options) === "function") {
+        callback = options;
+        options = null;
+    }
+
+    callback(emitter);
+
     BetterDiscord.HttpManager.get(url, options, (error, res, body) => {
+        console.log("data", res, body);
         if (error) return emitter.emit("error", error);
         emitter.emit("data", body);
         emitter.emit("end", res);
@@ -16,3 +24,5 @@ export function get(url, options = {}, callback) {
 
     return emitter;
 }
+
+export default {get};
