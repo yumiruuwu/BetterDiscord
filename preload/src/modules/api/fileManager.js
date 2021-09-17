@@ -38,7 +38,6 @@ export function watch(path, options, callback) {
     const watcherId = IPCEvents.WATCH_DIR + "-" + id;
 
     const handleCallback = (_, ...args) => {
-        console.log("receive:", args);
         callback(...args);
     };
 
@@ -73,9 +72,11 @@ export function getStats(path, options) {
             ...stats,
             _checkModeProperty,
             isDirectory() {
+                if (!stats || result.error) return false;
                 return _checkModeProperty(FileStatProperties.DIRECTORY);
             },
             isFile() {
+                if (!stats || result.error) return false;
                 return _checkModeProperty(FileStatProperties.FILE);
             }
         }

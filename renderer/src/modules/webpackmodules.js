@@ -283,7 +283,7 @@ export const ModulePromise = new Promise(resolve => {
     const callback = function () {
         Dispatcher.unsubscribe("CONNECTION_OPEN", callback);
         resolve();
-    }
+    };
 
     Dispatcher.subscribe("CONNECTION_OPEN", callback);
 });

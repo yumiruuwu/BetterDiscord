@@ -16,7 +16,6 @@ export function get(url, options = {}, callback) {
     callback(emitter);
 
     BetterDiscord.HttpManager.get(url, options, (error, res, body) => {
-        console.log("data", res, body);
         if (error) return emitter.emit("error", error);
         emitter.emit("data", body);
         emitter.emit("end", res);

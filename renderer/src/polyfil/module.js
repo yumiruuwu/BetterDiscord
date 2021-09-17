@@ -21,7 +21,7 @@ export const RequireExtensions = {
 
 export default class Module {
     static resolveMainFile(mod, basePath) {
-        const parent = path.dirname(basePath);
+        const parent = path.extname(basePath) ? path.dirname(basePath) : basePath;
         const files = BetterDiscord.FileManager.readDirectory(parent).value;
         if (!Array.isArray(files)) return null;
 
@@ -35,24 +35,41 @@ export default class Module {
                 return path.resolve(parent, pkg.main);
             }
 
-            if (path.slice(0, -ext.length) == "index") {
-                if (RequireExtensions[ext]) return mod;
-            }
+            if (path.slice(0, -ext.length) == "index" && RequireExtensions[ext]) return mod;
         }
     }
 
-    static _load(mod, basePath) {
-        // if (!path.isAbsolute(mod)) mod = path.resolve(basePath, mod);
-        if (!BetterDiscord.FileManager.exists(mod)) throw new Error(`Cannot find module ${mod}`);
-        if (window.require.cache[mod]) return window.require.cache[mod].exports;
-        // const stats = BetterDiscord.FileManager.getStats(mod).value;
-        // if (stats.isDirectory()) mod = this.resolveMainFile(mod, basePath);
+    static getExtension(mod) {
+        return path.extname(mod) || Reflect.ownKeys(RequireExtensions).find(e => BetterDiscord.FileManager.exists(mod + e).value);
+    }
 
-        let loader = RequireExtensions[path.extname(mod)];
+    static getFilePath(basePath, mod) {
+        if (!path.isAbsolute(mod)) mod = path.resolve(basePath, mod);
+        const defaultExtension = path.extname(mod);
+        if (!defaultExtension) {
+            const ext = Reflect.ownKeys(RequireExtensions).find(ext => BetterDiscord.FileManager.exists(mod + ext).value);
+            if (ext) {
+                mod = mod + ext;
+            }
+        }
 
-        if (!loader) throw new Error(`Cannot find module ${mod}`);
-        const module = window.require.cache[mod] = new Module(mod, internalModule);
-        loader(module, mod);
+        return mod;
+    }
+
+    static _load(mod, basePath, createRequire) {
+        if (!path.isAbsolute(mod)) mod = path.resolve(basePath, mod);
+        const filePath = this.getFilePath(basePath, mod);
+        if (!BetterDiscord.FileManager.exists(filePath)) throw new Error(`Cannot find module ${mod}`);
+        if (window.require.cache[filePath]) return window.require.cache[filePath].exports;
+        const {value: stats, error} = BetterDiscord.FileManager.getStats(filePath);
+        if (error) console.error({error, filePath});
+        if (stats.isDirectory()) mod = this.resolveMainFile(mod, basePath);
+        const ext = this.getExtension(filePath);
+        let loader = RequireExtensions[ext];
+
+        if (!loader) throw new Error(`Cannot find module ${filePath}`);
+        const module = window.require.cache[mod] = new Module(filePath, internalModule, createRequire(mod));
+        loader(module, filePath);
         return module.exports;
     }
 
@@ -62,7 +79,7 @@ export default class Module {
 
     static get _extensions() {return RequireExtensions;}
 
-    constructor(id, parent) {
+    constructor(id, parent, require) {
         this.id = id;
         this.path = BetterDiscord.PathModule.dirname(id);
         this.exports = {};
@@ -70,13 +87,14 @@ export default class Module {
         this.filename = id;
         this.loaded = false;
         this.children = [];
+        this.require = require;
 
         if (parent) parent.children.push(this);
     }
 
     _compile(code) {
         const wrapped = compileFunction(code, ["require", "module", "exports", "__filename", "__dirname", "global"], this.filename);
-        wrapped(window.require.bind(this.path), this, this.exports, this.filename, this.path, window);
+        wrapped(this.require, this, this.exports, this.filename, this.path, window);
     }
 };
 

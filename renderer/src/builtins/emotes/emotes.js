@@ -206,7 +206,7 @@ const modifiers = ["flip", "spin", "pulse", "spin2", "spin3", "1spin", "2spin", 
             delete __non_webpack_require__.cache[path.join(this.asarPath, "blocklist")];
         }
         catch (err) {
-            this.log("Failed to load emotes.", err);
+            this.error("Failed to load emotes.", err);
         }
 
         this.emotesLoaded = true;

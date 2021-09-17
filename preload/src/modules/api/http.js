@@ -2,10 +2,9 @@ let request;
 
 const req = function (url, options, callback) {
     if (!request) request = __non_webpack_require__("request");
-    console.log("request.req");
+    
     return request(url, options, (error, res, body) => {
         try {
-            console.log("req", {error, res, body});
             Reflect.apply(callback, null, [error, res, body]);
         } catch (err) {
             console.error(err);
@@ -15,10 +14,9 @@ const req = function (url, options, callback) {
 
 export const get = function (url, options, callback) {
     if (!request) request = __non_webpack_require__("request");
-    console.log("request.get", request);
+    
     return request.get(url, options, (error, res, body) => {
         try {
-            console.log({error, res, body});
             Reflect.apply(callback, null, [error, res, body]);
         } catch (err) {
             console.error(err);
