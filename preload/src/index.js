@@ -1,12 +1,6 @@
 import {contextBridge} from "electron";
 
-console.log({
-    Module,
-    globalPaths: Module.globalPaths.length,
-    request: import("request")
-});
 import newProcess from "./modules/process";
-import Module from "module";
 
 import * as BdApi from "./modules/api";
 

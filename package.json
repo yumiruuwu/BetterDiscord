@@ -4,10 +4,11 @@
     "description": "Enhances Discord by adding functionality and themes.",
     "main": "src/index.js",
     "scripts": {
-        "install": "cd injector && npm install && cd ../renderer && npm install",
+        "install": "cd injector && npm install && cd ../renderer && npm install && cd ../preload && npm install",
         "build": "npm run build-injector && npm run build-renderer",
-        "build-prod": "npm run build-prod --prefix injector && npm run build-prod --prefix renderer",
+        "build-prod": "npm run build-prod --prefix injector && npm run build-prod --prefix preload && npm run build-prod --prefix renderer",
         "build-injector": "npm run build --prefix injector",
+        "build-preload": "npm run build --prefix preload",
         "build-renderer": "npm run build --prefix renderer",
         "pack-emotes": "node scripts/emotes.js",
         "inject": "node scripts/inject.js",

@@ -2,6 +2,7 @@ const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 const CircularDependencyPlugin = require("circular-dependency-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const webpack = require("webpack");
 
 module.exports = (env, argv) => ({
   mode: "development",
@@ -34,6 +35,9 @@ module.exports = (env, argv) => ({
       exclude: /node_modules/,
       cwd: process.cwd(),
     }),
+    new webpack.optimize.LimitChunkCountPlugin({
+      maxChunks: 1
+    })
     // new CopyPlugin({
     //   patterns: [
     //     {

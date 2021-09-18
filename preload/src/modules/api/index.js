@@ -10,3 +10,4 @@ export * as ElectronModule from "./electron";
 // We can expose that without any issues.
 export const PathModule = __non_webpack_require__("path");
 export const Buffer = __non_webpack_require__("buffer");
+export const BufferStatic = Reflect.ownKeys(Buffer.Buffer).reduce((staticBuffer, key) => (staticBuffer[key] = Buffer.Buffer[key], staticBuffer), {});

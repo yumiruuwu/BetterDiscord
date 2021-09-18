@@ -3,7 +3,9 @@ import * as vm from "./vm";
 import * as fs from "./fs";
 import EventEmitter from "common/events";
 import * as https from "./https";
-
+import Buffer from "buffer/";
+// Object.assign(BetterDiscord.Buffer.Buffer, BetterDiscord.BufferStatic);
+// window.Buffer = BetterDiscord.BufferStatic;
 export const createRequire = function (path) {
     return mod => {
         switch (mod) {
@@ -16,6 +18,7 @@ export const createRequire = function (path) {
             case "electron": return BetterDiscord.ElectronModule;
             case "vm": return vm;
             case "module": return Module;
+            case "buffer": return Buffer;
             case "crypto": return;
     
             default:
@@ -32,6 +35,6 @@ require.resolve = (path) => {
     }
 }
 
-window.Buffer = BetterDiscord.Buffer;
+window.Buffer = Buffer.Buffer;
 
 export default require;

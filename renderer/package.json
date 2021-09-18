@@ -35,5 +35,8 @@
         "stylelint-config-standard": "^20.0.0",
         "webpack": "^4.46.0",
         "webpack-cli": "^3.3.12"
+    },
+    "dependencies": {
+        "buffer": "^6.0.3"
     }
 }
