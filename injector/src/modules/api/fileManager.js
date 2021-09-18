@@ -15,7 +15,6 @@ IPC.on(IPCEvents.WATCH_DIR, createListener((event, path, options = {}, watcherId
     const id = IPCEvents.WATCH_DIR + "-" + watcherId;
 
     const callback = (...args) => {
-        console.log("emit", id);
         event.sender.webContents.send(id, ...args);
     };
 

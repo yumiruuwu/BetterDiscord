@@ -10,8 +10,13 @@ export const readFile = function (path, options = "utf8", callback) {
 };
 
 export const writeFile = function (path, data, options = "utf8", callback) {
+    if (typeof (options) === "function") {
+        callback = options;
+        if (!["object", "string"].includes(typeof (options))) options = undefined;
+    }
+
     const result = BetterDiscord.FileManager.writeFile(path, data, options);
-    callback();
+    callback(result?.error, result?.value);
 };
 
 export const writeFileSync = function (path, data, options = "utf8") {

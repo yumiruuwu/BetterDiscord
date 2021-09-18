@@ -22,6 +22,7 @@ export function deleteDirectory(path, options) {
 }
 
 export function exists(path) {
+    if (!IPC) return false; // I have no fucking idea how this can be null.
     return IPC.sendSync(IPCEvents.EXISTS_FILE, path);
 }
 
