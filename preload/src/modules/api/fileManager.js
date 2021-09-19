@@ -1,5 +1,7 @@
 import {ipcRenderer as IPC} from "electron";
 import * as IPCEvents from "common/constants/ipcevents";
+import * as fs from "fs";
+import cloneObject from "common/clone";
 
 export function readFile(path, options = "utf8") {
     return IPC.sendSync(IPCEvents.READ_FILE, path, options);
@@ -32,6 +34,10 @@ export function getRealPath(path, options) {
 
 export function rename(oldPath, newPath) {
     return IPC.sendSync(IPCEvents.RENAME, oldPath, newPath);
+}
+
+export function createWriteStream(path, options) {
+    return cloneObject(fs.createWriteStream(path, options));
 }
 
 export function watch(path, options, callback) {

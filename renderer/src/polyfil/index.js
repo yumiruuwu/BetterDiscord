@@ -4,8 +4,7 @@ import * as fs from "./fs";
 import EventEmitter from "common/events";
 import * as https from "./https";
 import Buffer from "buffer/";
-// Object.assign(BetterDiscord.Buffer.Buffer, BetterDiscord.BufferStatic);
-// window.Buffer = BetterDiscord.BufferStatic;
+
 export const createRequire = function (path) {
     return mod => {
         switch (mod) {
