@@ -279,11 +279,19 @@ export default class WebpackModules {
 
 export const ModulePromise = new Promise(resolve => {
     const Dispatcher = WebpackModules.getByProps("dirtyDispatch");
-    
+    const UserStore = WebpackModules.getByProps("getCurrentUser");
+    let shouldUnsubscribe = true;
+
     const callback = function () {
-        Dispatcher.unsubscribe("CONNECTION_OPEN", callback);
+        if (shouldUnsubscribe) Dispatcher.unsubscribe("CONNECTION_OPEN", callback);
         resolve();
     };
 
-    Dispatcher.subscribe("CONNECTION_OPEN", callback);
+    if (UserStore && !UserStore.getCurrentUser()) {
+        Dispatcher.subscribe("CONNECTION_OPEN", callback);
+    }
+    else {
+        shouldUnsubscribe = false;
+        callback();
+    }
 });

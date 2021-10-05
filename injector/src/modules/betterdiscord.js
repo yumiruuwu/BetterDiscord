@@ -63,7 +63,7 @@ export default class BetterDiscord {
         const success = await browserWindow.webContents.executeJavaScript(`
             (() => {
                 try {
-                    console.log("Load");
+                    window.global = window;
                     ${content}
                     return true;
                 } catch (error) {
@@ -71,11 +71,14 @@ export default class BetterDiscord {
                     return false;
                 }
             })();
+            //# sourceURL=${location.replace(/\\/g, "\\")}
         `);
 
-        if (!success) return; // TODO: cut a fatal log
+        // TODO: Make it show a dialog that bd failed to load.
+        if (!success) return console.log("[BetterDiscord]", "Failed to inject!");
     }
 
+    /**@param {Electron.BrowserWindow} browserWindow */
     static setup(browserWindow) {
 
         // Setup some useful vars to avoid blocking IPC calls
