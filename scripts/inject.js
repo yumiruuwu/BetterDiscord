@@ -7,7 +7,7 @@ const buildPackage = require("./package");
 
 const useBdRelease = args[2] && args[2].toLowerCase() === "release";
 const releaseInput = useBdRelease ? args[3] && args[3].toLowerCase() : args[2] && args[2].toLowerCase();
-const release = releaseInput === "canary" ? "Discord Canary" : releaseInput === "ptb" ? "Discord PTB" : "Discord";
+const release = releaseInput === "canary" ? "Discord Canary" : releaseInput === "ptb" ? "Discord PTB" : releaseInput === "dev" ? "Discord Development" : "Discord";
 const bdPath = useBdRelease ? path.resolve(__dirname, "..", "dist", "betterdiscord.asar") : path.resolve(__dirname, "..", "dist");
 const discordPath = (function() {
     let resourcePath = "";
@@ -20,6 +20,7 @@ const discordPath = (function() {
     else if (process.platform === "darwin") {
         const appPath = releaseInput === "canary" ? path.join("/Applications", "Discord Canary.app")
             : releaseInput === "ptb" ? path.join("/Applications", "Discord PTB.app")
+            : releaseInput === "dev" ? path.join("/Applications", "Discord Development.app")
             : useBdRelease && args[3] ? args[3] ? args[2] : args[2]
             : path.join("/Applications", "Discord.app");
 
