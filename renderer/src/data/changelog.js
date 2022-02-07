@@ -1,18 +1,27 @@
 export default {
-    description: "Expect more soon!",
+    description: "Just some minor updates to keep things running smoothly!",
     changes: [
         {
-            title: "Changes",
-            type: "improved",
+            title: "What's new?",
+            type: "added",
+            description: "Some basic preferences for the addon editor have been added including:",
             items: [
-                "Startup no longer relies on Guild classes so it should be more stable."
+                "Font size adjustment",
+                "Line numbers toggle",
+                "Minimap toggle",
+                "Whitespace preference",
+                "Reference tooltips",
+                "Quick suggestions"
             ]
         },
         {
             title: "Fixes",
             type: "fixed",
             items: [
-                "Emote menu no longer crashes Discord."
+                "All those `GuildComponent` errors should now be gone!",
+                "Public servers button shows up again if things get reloaded.",
+                "Plugin compilation errors point to console for more info.",
+                "Plugins with no `@name` property will now properly error.",
             ]
         }
     ]
